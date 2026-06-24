@@ -8,7 +8,7 @@ from typing import Any
 import yaml
 from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -69,13 +69,25 @@ class IngestRequest(BaseModel):
     inbox: bool = False
 
 
+class DemoRequest(BaseModel):
+    name: str
+    email: str
+    company: str
+    message: str = ""
+
+
 @app.get("/")
-def root() -> dict[str, str]:
+def root():
+    return RedirectResponse(url="/site/index.html")
+
+
+@app.get("/api")
+def api_index() -> dict[str, str]:
     return {
         "product": PRODUCT["name"],
         "tagline": PRODUCT["tagline"],
+        "app": "/site/index.html",
         "docs": "/docs",
-        "marketing": "/site/index.html",
         "console": "/console/index.html",
         "health": "/health",
     }
@@ -264,6 +276,61 @@ def profiles() -> dict[str, Any]:
 @app.get("/v1/commercial", dependencies=[Depends(verify_key)] if API_KEY_REQUIRED else [])
 def commercial() -> dict[str, Any]:
     return CONFIG["commercial"]
+
+
+@app.post("/v1/demo/run")
+def demo_run(profile: str = "asr_corpus_v1") -> dict[str, Any]:
+    from api.demo import run_live_demo
+
+    try:
+        return run_live_demo(profile=profile)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.post("/v1/leads/demo-request")
+def demo_request(body: DemoRequest) -> dict[str, str]:
+    from api.demo import save_demo_request
+
+    path = save_demo_request(body.model_dump())
+    return {
+        "status": "saved",
+        "message": "Demo request received. We'll follow up at the email provided.",
+        "path": str(path.relative_to(ROOT)),
+    }
+
+
+@app.get("/v1/leads/demo-request")
+def list_demo_requests() -> list[dict[str, Any]]:
+    path = ROOT / "leads" / "inbound" / "demo-requests.jsonl"
+    if not path.exists():
+        return []
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rows.append(json.loads(line))
+    return rows[-50:]
+
+
+@app.get("/v1/audit/download")
+def audit_download():
+    catalog = Catalog()
+    assets = catalog.list_assets(limit=50_000)
+    releases = catalog.list_releases()
+    payload = {
+        "exported_at": datetime.now(timezone.utc).isoformat(),
+        "product": PRODUCT["name"],
+        "version": PRODUCT["version"],
+        "asset_count": len(assets),
+        "release_count": len(releases),
+        "assets": [a.__dict__ for a in assets],
+        "releases": releases,
+    }
+    export_dir = ROOT / "catalog" / "audit_exports"
+    export_dir.mkdir(parents=True, exist_ok=True)
+    out = export_dir / f"audit_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.json"
+    out.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return FileResponse(path=out, filename=out.name, media_type="application/json")
 
 
 def main() -> None:
