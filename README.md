@@ -1,36 +1,42 @@
 <p align="center">
-  <a href="https://dacameragirl.github.io/Vaultline/">
-    <img src="https://img.shields.io/badge/▶_OPEN_LIVE_SITE-5eead4?style=for-the-badge&labelColor=0f131a" alt="Open live site"/>
-  </a>
-  <a href="https://github.com/DaCameraGirl/Vaultline">
-    <img src="https://img.shields.io/badge/Code-GitHub-3d8bfd?style=for-the-badge&labelColor=0f131a" alt="GitHub"/>
-  </a>
+  <img src="docs/assets/readme-hero.svg" alt="Vaultline — AI training media governance" width="100%"/>
 </p>
 
 # Vaultline
+
+<p align="center">
+  <a href="https://dacameragirl.github.io/Vaultline/"><img src="https://img.shields.io/badge/🌐_Live_Site-5eead4?style=for-the-badge" alt="Live site"/></a>
+  <a href="https://dacameragirl.github.io/links/"><img src="https://img.shields.io/badge/🔗_Project_Hub-131a26?style=for-the-badge" alt="Project hub"/></a>
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
+  <img src="https://img.shields.io/badge/Render-5eead4?style=for-the-badge" alt="Render"/>
+</p>
 
 **AI training media governance** — provenance, QC, compliance, and immutable releases for voice and video training data.
 
 Prove what went into the model: every clip traced, QC-gated, and release-ready.
 
-## Repo vs live app
+> **Status:** marketing site is live on GitHub Pages. The **full platform** (API + console + ingest) runs locally via Desktop shortcut or deploys with [DEPLOY.md](./DEPLOY.md).
 
-| What you want | URL |
-|---------------|-----|
-| **Marketing / landing** (GitHub Pages) | **[dacameragirl.github.io/Vaultline](https://dacameragirl.github.io/Vaultline/)** |
-| **Full platform** (API + console + ingest) | Run locally (Desktop shortcut) or deploy with [DEPLOY.md](./DEPLOY.md) |
-| **All Angela's projects** | **[dacameragirl.github.io/links](https://dacameragirl.github.io/links/)** |
-| Source on GitHub | `github.com/DaCameraGirl/Vaultline` |
+## Repo vs live
 
-GitHub shows this README. The **live marketing site** is a separate Pages URL — bookmark the link above.
+| What | URL |
+|---|---|
+| **GitHub repo** | [github.com/DaCameraGirl/Vaultline](https://github.com/DaCameraGirl/Vaultline) |
+| **Marketing / landing** (GitHub Pages) | [dacameragirl.github.io/Vaultline](https://dacameragirl.github.io/Vaultline/) |
+| **Full platform** (API + console + ingest) | Desktop shortcut or [DEPLOY.md](./DEPLOY.md) |
+| **Project hub** | [dacameragirl.github.io/links](https://dacameragirl.github.io/links/) |
 
-## What ships in this repo
+GitHub shows this README. Bookmark the **live site** for the marketing URL — it's separate from the repo page.
 
-| Layer | What it is |
-|-------|------------|
+## Highlights
+
+| Layer | What it does |
+|---|---|
 | **Enterprise API** | FastAPI — ingest, upload, QC, compliance, releases, audit export |
 | **Marketing site** | Live product UI at `/site/index.html` when the API is running |
-| **Ops console** | Dashboard at `/console/index.html` |
+| **Ops console** | Dashboard at `/console/index.html` — assets, lineage, actions |
 | **CLI** | `bench.py` for pipeline operations |
 | **Catalog** | SQLite provenance + QC + release registry |
 | **Go-to-market** | `leads/target-accounts.csv`, `marketing/one-pager.md`, outreach templates |
@@ -55,9 +61,11 @@ setup\Launch Vaultline.bat
 
 **URLs when the server is running:**
 
-- Marketing + live API: http://localhost:8470/site/index.html
-- Console: http://localhost:8470/console/index.html
-- API docs: http://localhost:8470/docs
+| Surface | URL |
+|---|---|
+| Marketing + live API | http://localhost:8470/site/index.html |
+| Console | http://localhost:8470/console/index.html |
+| API docs | http://localhost:8470/docs |
 
 Verify everything:
 
@@ -73,9 +81,11 @@ powershell -File setup/stop-vaultline.ps1
 
 ## Who buys this
 
-- Voice AI companies (ASR/TTS) facing consent + QC audits
-- Video/multimodal labs shipping benchmark datasets
-- Enterprise AI vendors answering procurement questionnaires
+| Segment | Pain |
+|---|---|
+| Voice AI (ASR/TTS) | Consent + QC audits before model ship |
+| Video / multimodal labs | Benchmark datasets with traceable lineage |
+| Enterprise AI vendors | Procurement questionnaires on data governance |
 
 **Buyer:** VP Engineering · Head of ML Data · Director AI Compliance
 
@@ -90,7 +100,7 @@ See `marketing/CAMPAIGN.md` for the 30-day plan.
 
 ## API quick reference
 
-```
+```http
 GET  /health
 GET  /v1/dashboard
 GET  /v1/assets
@@ -106,18 +116,24 @@ See **[DEPLOY.md](./DEPLOY.md)** — GitHub Pages (marketing), Render (API), or 
 
 ## Project structure
 
-```
+```text
 Vaultline/
 ├── api/server.py           Enterprise API
-├── marketing/              Landing + GTM copy
+├── marketing/              Landing + GTM copy (Pages deploy source)
 ├── console/                Ops dashboard
 ├── leads/                  Target accounts
 ├── workbench/              Catalog, QC, ingest, export
 ├── catalog/                SQLite registry (local, gitignored)
 ├── releases/               Immutable dataset bundles
+├── docs/assets/            README hero SVG
 └── config/enterprise.yaml  Product config
 ```
 
+## Contributors
+
+- **Angela Hudson** ([DaCameraGirl](https://github.com/DaCameraGirl)) — product direction, GTM, testing
+- **Claude** — platform scaffold, API, console, marketing, deploy kit
+
 ## License
 
-Copyright (c) 2026 Angela Hudson. See [LICENSE](./LICENSE).
+© 2026 Angela Hudson (DaCameraGirl). See [LICENSE](./LICENSE).
