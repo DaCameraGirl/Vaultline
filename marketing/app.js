@@ -95,6 +95,25 @@ async function refreshLive() {
   }
 }
 
+async function repairCatalog() {
+  appendLog("Repairing catalog — compliance fill, audio normalize, re-QC…", "info");
+  try {
+    const result = await api("/v1/catalog/repair", { method: "POST" });
+    appendLog(`Repair done: ${result.now_passing} passing, ${result.still_failing} still failing`, "ok");
+    for (const asset of result.assets || []) {
+      if (asset.after !== asset.before) {
+        appendLog(`${asset.path}: ${asset.before || "?"} → ${asset.after}`, asset.after === "pass" ? "ok" : "warn");
+      }
+      for (const failure of asset.failures || []) {
+        appendLog(`  ↳ ${failure}`, "warn");
+      }
+    }
+    await refreshLive();
+  } catch (err) {
+    appendLog(`Repair failed: ${err.message}`, "error");
+  }
+}
+
 async function runDemo() {
   const btn = $("#btn-demo");
   btn.disabled = true;
@@ -167,6 +186,7 @@ function init() {
   $("#btn-audit")?.addEventListener("click", exportAudit);
   $("#btn-quantum")?.addEventListener("click", quantumSeed);
   $("#btn-refresh")?.addEventListener("click", refreshLive);
+  $("#btn-repair")?.addEventListener("click", repairCatalog);
   $("#demo-form")?.addEventListener("submit", submitDemoForm);
 
   const drop = $("#dropzone");

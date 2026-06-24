@@ -279,6 +279,14 @@ def commercial() -> dict[str, Any]:
     return CONFIG["commercial"]
 
 
+@app.post("/v1/catalog/repair")
+def catalog_repair() -> dict[str, Any]:
+    from workbench.repair import repair_catalog, repair_summary
+
+    results = repair_catalog()
+    return repair_summary(results)
+
+
 @app.post("/v1/demo/run")
 def demo_run(profile: str = "asr_corpus_v1") -> dict[str, Any]:
     from api.demo import run_live_demo
