@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Large media files stay local; manifests and project files are tracked.
+assets/**/*
+!assets/**/.gitkeep
+
+# Editor temp/cache files
+*.mlt.bak
+*.osp.bak
+*.bak

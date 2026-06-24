@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Research Media Asset Manifest",
+  "type": "object",
+  "required": ["version", "generated_at", "assets"],
+  "properties": {
+    "version": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "project": { "type": "string" },
+    "preset": { "type": "string" },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "kind", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "kind": { "enum": ["video", "audio", "image", "other"] },
+          "status": { "enum": ["valid", "invalid", "pending"] },
+          "duration_sec": { "type": "number" },
+          "width": { "type": "integer" },
+          "height": { "type": "integer" },
+          "fps": { "type": "number" },
+          "sample_rate_hz": { "type": "integer" },
+          "channels": { "type": "integer" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "source_tool": {
+            "enum": ["shotcut", "openshot", "lightworks", "ardour", "lmms", "ffmpeg", "unknown"]
+          },
+          "notes": { "type": "string" },
+          "issues": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+# Export presets for ML-ready assets and demo deliverables.
+# Use these settings when exporting from each editor.
+
+video:
+  training_720p:
+    description: Standard clip format for video model training
+    width: 1280
+    height: 720
+    fps: 30
+    codec: h264
+    pixel_format: yuv420p
+    crf: 18
+    audio_codec: aac
+    audio_bitrate_kbps: 128
+
+  training_1080p:
+    description: Higher-res training clips
+    width: 1920
+    height: 1080
+    fps: 30
+    codec: h264
+    pixel_format: yuv420p
+    crf: 18
+    audio_codec: aac
+    audio_bitrate_kbps: 192
+
+  demo_reel:
+    description: Polished output for papers, grants, and conference demos
+    width: 1920
+    height: 1080
+    fps: 24
+    codec: h264
+    pixel_format: yuv420p
+    crf: 16
+    audio_codec: aac
+    audio_bitrate_kbps: 256
+
+audio:
+  speech_asr:
+    description: Speech clips for ASR / speech-model datasets
+    format: wav
+    sample_rate_hz: 16000
+    channels: 1
+    bit_depth: 16
+    loudness_lufs: -16
+
+  speech_tts:
+    description: Higher-fidelity speech for TTS evaluation
+    format: wav
+    sample_rate_hz: 44100
+    channels: 1
+    bit_depth: 16
+    loudness_lufs: -16
+
+  music_sfx:
+    description: LMMS stems and synthetic beds for multimodal benchmarks
+    format: wav
+    sample_rate_hz: 44100
+    channels: 2
+    bit_depth: 16
+    loudness_lufs: -14
+
+naming:
+  pattern: "{subject}_{action}_{index:04d}.{ext}"
+  examples:
+    - "interview_wave_0001.wav"
+    - "demo_run_inference_0012.mp4"
+    - "synth_pad_loop_0040.wav"

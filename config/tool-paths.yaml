@@ -1,0 +1,43 @@
+﻿# Point each tool at its install location on your machine.
+# Run: powershell -File setup/detect-tools.ps1  to auto-fill what it finds.
+
+tools:
+  shotcut:
+    label: Shotcut
+    role: Video segmentation and dataset curation
+    inbox: assets/01_video_raw
+    projects: projects/shotcut
+    exports: assets/03_editing
+    executable: ""
+
+  openshot:
+    label: OpenShot
+    role: Quick explainer and internal demo edits
+    inbox: assets/01_video_raw
+    projects: projects/openshot
+    exports: assets/03_editing
+    executable: ""
+
+  lightworks:
+    label: Lightworks
+    role: Polished research reels and conference deliverables
+    inbox: assets/01_video_raw
+    projects: projects/lightworks
+    exports: assets/06_exports/demos
+    executable: ""
+
+  ardour:
+    label: Ardour
+    role: Speech cleanup, normalization, and stem export
+    inbox: assets/02_audio_raw
+    projects: projects/ardour
+    exports: assets/04_audio_stems
+    executable: ""
+
+  lmms:
+    label: LMMS
+    role: Synthetic music and controlled soundscapes
+    inbox: assets/02_audio_raw
+    projects: projects/lmms
+    exports: assets/04_audio_stems
+    executable: ""
