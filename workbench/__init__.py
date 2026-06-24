@@ -1,3 +1,3 @@
-"""SignalForge Workbench — research media asset infrastructure."""
+"""Vaultline — AI training media governance platform."""
 
-__version__ = "0.2.0"
+__version__ = "1.0.0"

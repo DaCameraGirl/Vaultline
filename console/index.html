@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaultline Console</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #07090d; color: #e8edf5; margin: 0; }
+    header { padding: 1rem 1.5rem; border-bottom: 1px solid #1c2430; display: flex; justify-content: space-between; }
+    main { padding: 1.5rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card { background: #0f131a; border: 1px solid #1c2430; border-radius: 12px; padding: 1rem; }
+    h1 { font-size: 1rem; margin: 0; }
+    .metric { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #1c2430; }
+    th { color: #8b97a8; }
+    .section { grid-column: 1 / -1; }
+    .ok { color: #5eead4; } .fail { color: #f87171; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vaultline Console</h1>
+    <span id="status">Loading…</span>
+  </header>
+  <main>
+    <div class="card"><div>Total assets</div><div class="metric" id="total">—</div></div>
+    <div class="card"><div>Releases</div><div class="metric" id="releases">—</div></div>
+    <div class="card"><div>QC passed</div><div class="metric ok" id="passed">—</div></div>
+    <div class="card"><div>QC failed</div><div class="metric fail" id="failed">—</div></div>
+    <div class="card section">
+      <strong>Recent assets</strong>
+      <table>
+        <thead><tr><th>ID</th><th>Path</th><th>Kind</th><th>QC</th><th>Tool</th></tr></thead>
+        <tbody id="assets"></tbody>
+      </table>
+    </div>
+  </main>
+  <script>
+    async function load() {
+      const dash = await fetch('/v1/dashboard').then(r => r.json());
+      const assets = await fetch('/v1/assets?limit=20').then(r => r.json());
+      document.getElementById('status').textContent = 'Live';
+      document.getElementById('total').textContent = dash.summary.total_assets;
+      document.getElementById('releases').textContent = dash.summary.releases;
+      document.getElementById('passed').textContent = dash.summary.by_qc_verdict.pass ?? 0;
+      document.getElementById('failed').textContent = dash.summary.by_qc_verdict.fail ?? 0;
+      const tbody = document.getElementById('assets');
+      tbody.innerHTML = assets.map(a => `<tr>
+        <td>${a.asset_id.slice(0,24)}…</td>
+        <td>${a.rel_path}</td>
+        <td>${a.kind}</td>
+        <td>${a.qc_verdict ?? '—'}</td>
+        <td>${a.source_tool}</td>
+      </tr>`).join('');
+    }
+    load();
+    setInterval(load, 10000);
+  </script>
+</body>
+</html>

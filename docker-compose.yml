@@ -1,0 +1,15 @@
+services:
+  vaultline:
+    build: .
+    ports:
+      - "8470:8470"
+    volumes:
+      - ./assets:/app/assets
+      - ./catalog:/app/catalog
+      - ./releases:/app/releases
+      - ./manifests:/app/manifests
+      - ./config:/app/config
+    environment:
+      - VAULTLINE_HOST=0.0.0.0
+      - VAULTLINE_PORT=8470
+    restart: unless-stopped

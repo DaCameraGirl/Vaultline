@@ -1,0 +1,41 @@
+product:
+  name: Vaultline
+  tagline: AI Training Media Governance
+  version: 1.0.0
+  positioning: >-
+    Enterprise audit, QC, and release control for voice and video training data.
+    The compliance layer between creative production and model deployment.
+
+deployment:
+  api_host: 0.0.0.0
+  api_port: 8470
+  console_enabled: true
+  require_api_key: false
+  api_key_header: X-Vaultline-Key
+
+commercial:
+  primary_buyer: VP Engineering / Head of ML Data / Director AI Compliance
+  pricing_anchor: $2,400/mo team · $8,500/mo enterprise · custom air-gapped
+  sla: 99.9% uptime target for managed deployments
+
+integrations:
+  editors:
+    - Shotcut
+    - OpenShot
+    - Lightworks
+    - Ardour
+    - LMMS
+  exports:
+    - jsonl
+    - huggingface
+    - webdataset
+  compliance_frameworks:
+    - EU AI Act training data documentation
+    - Enterprise procurement audit trails
+    - IRB human-subject media governance
+
+security:
+  sso_ready: true
+  rbac_ready: true
+  air_gapped_supported: true
+  audit_log_export: true

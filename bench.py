@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SignalForge Workbench — industry-grade research media infrastructure."""
+"""Vaultline CLI — enterprise AI training media governance."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def cmd_dashboard(_: argparse.Namespace) -> int:
     catalog = Catalog()
     summary = catalog.summary()
     if HAS_RICH:
-        table = Table(title="SignalForge Workbench")
+        table = Table(title="Vaultline Enterprise")
         table.add_column("Metric")
         table.add_column("Value", justify="right")
         table.add_row("Total assets", str(summary["total_assets"]))
@@ -287,13 +287,21 @@ def cmd_profiles(_: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_serve(_: argparse.Namespace) -> int:
+    from api.server import main as serve_main
+
+    serve_main()
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="bench",
-        description="SignalForge Workbench — research media asset infrastructure",
+        prog="vaultline",
+        description="Vaultline — enterprise AI training media governance",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
+    sub.add_parser("serve", help="Start enterprise API + marketing site + console").set_defaults(func=cmd_serve)
     sub.add_parser("dashboard", help="Operational overview").set_defaults(func=cmd_dashboard)
     sub.add_parser("profiles", help="List dataset profiles and QC policies").set_defaults(func=cmd_profiles)
 

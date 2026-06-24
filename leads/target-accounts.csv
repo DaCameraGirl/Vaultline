@@ -1,0 +1,25 @@
+company,segment,priority,why_now,target_role,contact_path,status
+ElevenLabs,Voice AI,A,Scaling voice datasets; consent/licensing pressure,Head of ML Data,https://elevenlabs.io + LinkedIn,pending
+Runway,Video AI,A,Video model training needs auditable clip lineage,Director Data Platform,https://runwayml.com/careers + LinkedIn,pending
+HeyGen,Video AI,A,Avatar/video training pipeline governance,VP Engineering,https://www.heygen.com contact + LinkedIn,pending
+Synthesia,Video AI,A,Enterprise customers asking training data questions,Head of AI / Data,https://www.synthesia.io contact,pending
+Descript,Voice/Video,A,Audio-first product; dataset QC at core,ML Infrastructure Lead,https://www.descript.com + LinkedIn,pending
+Encord,Data Platform,A,Dataset ops competitor/partner; governance angle,Head of Partnerships,https://encord.com/contact,pending
+Defined.ai,Data Provider,A,Sells training data; QC layer is upsell,Enterprise Sales Director,https://defined.ai contact,pending
+Shaip,Speech Data,A,Speech catalog vendor; compliance is buyer objection,Solutions Architect,https://www.shaip.com contact,pending
+Voices.com,Speech Data,A,AI voice dataset commercialization,AI Solutions Lead,https://www.voices.com/solutions/ai-voice-datasets,pending
+PlayHT,Voice AI,B,TTS scaling; needs release discipline,CTO / Head of Engineering,LinkedIn + site contact,pending
+Murf.ai,Voice AI,B,Voice model training governance,Head of Product Engineering,LinkedIn,pending
+Luma AI,Video AI,B,Video gen training media ops,Research Ops Lead,https://lumalabs.ai + LinkedIn,pending
+Pika,Video AI,B,Video dataset curation pain,ML Platform Engineer,LinkedIn,pending
+Hugging Face,Datasets,B,Dataset publishers need release tooling,DevRel / Datasets team,https://huggingface.co + Discord,pending
+MLCommons,Benchmarks,B,Benchmark dataset governance,Working group chairs,https://mlcommons.org,pending
+Thinking Machines,Research,B,Multimodal research infra gap,Research Engineer lead,https://thinkingmachines.ai careers,pending
+World Labs,Video/3D,B,Spatial media training governance,Infra lead,https://www.worldlabs.ai + LinkedIn,pending
+Scale AI,Data Labeling,B,Enterprise audit overlap — competitive,Enterprise AE data vertical,https://scale.com contact,pending
+Labelbox,Data Labeling,B,Dataset QC complement,Head of Product,https://labelbox.com contact,pending
+Inworld AI,Voice AI,B,Character voice datasets,Head of ML,LinkedIn,pending
+Resemble AI,Voice AI,B,Voice cloning compliance,CEO/CTO outreach,https://www.resemble.ai contact,pending
+Speechmatics,ASR Enterprise,A,Enterprise ASR = compliance is the sale,VP Product,https://www.speechmatics.com contact,pending
+Deepgram,ASR Enterprise,A,Voice API vendors face enterprise questionnaires,Head of Solutions Engineering,https://deepgram.com contact,pending
+AssemblyAI,ASR Enterprise,A,Audio intelligence at scale,Director ML,https://www.assemblyai.com contact,pending

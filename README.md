@@ -1,151 +1,99 @@
-# SignalForge Workbench
+# Vaultline
 
-Research media infrastructure for teams that ship **reproducible multimodal datasets** — not one-off demo folders.
+**AI Training Media Governance** — enterprise audit, QC, and release control for voice and video training data.
 
-Editors (**Shotcut**, **OpenShot**, **Lightworks**, **Ardour**, **LMMS**) are where creative work happens. SignalForge is the layer the industry actually needs underneath: **catalog, provenance, QC gates, compliance, and immutable releases** wired to modern training exports.
+Deploy today. Market today. No cloud lock-in.
 
-## Why teams keep this running
+---
 
-| Problem in the wild | What SignalForge does |
-|---------------------|------------------------|
-| "Which clip is the canonical one?" | SHA-256 + content signatures, duplicate detection |
-| "What transform produced this file?" | Full provenance chain per asset |
-| "Can this go in the training split?" | Policy-driven QC with pass/fail verdicts |
-| "Do we have consent/license on every clip?" | Compliance metadata enforced at release time |
-| "What exactly did we ship last month?" | Versioned releases with JSONL, HuggingFace, and WebDataset bundles |
+## What ships in this repo
 
-## Architecture
+| Layer | What it is |
+|-------|------------|
+| **Enterprise API** | FastAPI — ingest, upload, QC, compliance, releases, audit export |
+| **Marketing site** | Premium landing page at `/site/index.html` |
+| **Ops console** | Live dashboard at `/console/index.html` |
+| **CLI** | `bench.py` for pipeline operations |
+| **Catalog** | SQLite provenance + QC + release registry |
+| **Go-to-market** | `leads/target-accounts.csv`, `marketing/one-pager.md`, outreach templates |
+| **Docker** | `docker-compose up` for production-style deploy |
 
-```
-Editors (human creative surface)
-  Shotcut / OpenShot / Lightworks  → video
-  Ardour / LMMS                    → audio
-           ↓
-SignalForge Workbench (machine layer)
-  ingest → catalog.db → QC policies → compliance → release bundles
-           ↓
-Training / eval stacks
-  HuggingFace · JSONL · WebDataset · custom loaders
-```
-
-## Quick start
+## Start the platform
 
 ```powershell
-cd "C:\Users\enter\Documents\Apps_And_Code\01_App_Project_Folders\ai-research-media-workbench"
+powershell -File setup/start.ps1
+```
 
-python -m venv .venv
+Or:
+
+```powershell
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-# Install and wire editor paths
-powershell -File setup/install-tools.ps1
-powershell -File setup/detect-tools.ps1
+python bench.py serve
 ```
 
-Requires **ffmpeg** / **ffprobe** on PATH.
+**Live URLs:**
+- Marketing: http://localhost:8470/site/index.html
+- Console: http://localhost:8470/console/index.html
+- API docs: http://localhost:8470/docs
 
-## Daily operations
+## Who desperately needs this
+
+- Voice AI companies (ASR/TTS) facing consent + QC audits
+- Video/multimodal labs shipping benchmark datasets
+- Enterprise AI vendors answering procurement questionnaires
+- Regulated speech (health, legal, biometric)
+
+**Buyer:** VP Engineering · Head of ML Data · Director AI Compliance
+
+## Market it
+
+1. Open `leads/target-accounts.csv` — 24 priority accounts pre-loaded
+2. Find verified emails: LinkedIn → Hunter.io (company domain only)
+3. Send templates from `marketing/outreach-templates.md`
+4. Demo link: your deployed `/site/index.html` + `/console/index.html`
+5. Attach `marketing/one-pager.md` for enterprise calls
+
+**Contact on all materials:** hello@vaultline.ai (set up forwarding on your domain)
+
+## Enterprise pricing (on marketing site)
+
+- Team: $2,400/mo
+- Enterprise: $8,500/mo
+- Air-gapped/regulated: custom
+
+## API quick reference
+
+```
+GET  /health
+GET  /v1/dashboard
+GET  /v1/assets
+POST /v1/uploads
+POST /v1/ingest
+POST /v1/releases
+GET  /v1/audit/export
+```
+
+## Docker deploy
 
 ```powershell
-# Operational dashboard
-python bench.py dashboard
-
-# See dataset profiles and QC policies
-python bench.py profiles
-
-# Drop files in assets/00_inbox, then ingest + gate
-python bench.py ingest --inbox --profile multimodal_v1
-
-# Or register an existing tree
-python bench.py ingest --path assets/06_exports --profile asr_corpus_v1
-
-# Attach compliance before release
-python bench.py compliance --asset <asset_id> --field license --value "CC-BY-4.0"
-python bench.py compliance --asset <asset_id> --field consent --value "signed-2026-06-01"
-
-# Run QC explicitly
-python bench.py qc --policy speech_audio --path assets/04_audio_stems
-
-# Trace lineage
-python bench.py lineage <asset_id>
-
-# Ship an immutable release (blocked until profile minimums are met)
-python bench.py release create --profile multimodal_v1 --version 1.0.0 --notes "June pilot split"
-
-# Export for training pipelines
-python bench.py export --format huggingface --profile multimodal_v1 --passing-only --output manifests/hf_export
-
-# Watch inbox during active capture sessions
-python bench.py watch --profile multimodal_v1
+docker compose up --build
 ```
 
-## Dataset profiles
+## Editor integrations
 
-Profiles define what "release-ready" means. Config: `config/dataset-profiles.yaml`.
+Shotcut · OpenShot · Lightworks · Ardour · LMMS — creative surface unchanged. Vaultline is the governance layer underneath.
 
-| Profile | Use case |
-|---------|----------|
-| `multimodal_v1` | Video+audio clips for multimodal pretraining/eval |
-| `asr_corpus_v1` | 16 kHz speech corpus for ASR |
-| `tts_eval_v1` | 44.1 kHz speech for TTS evaluation |
-| `demo_reel_v1` | Publication-grade research reels |
-| `synthetic_audio_v1` | Controlled LMMS/Ardour benchmark stems |
-
-Each profile maps to a **QC policy** in `config/qc-policies.yaml` with measurable gates: duration, resolution, FPS, loudness (LUFS), silence ratio, blur score, and required compliance fields.
-
-## Editor roles
-
-| Tool | When to reach for it |
-|------|----------------------|
-| **Shotcut** | Segment long captures into training-length clips |
-| **OpenShot** | Fast internal explainers |
-| **Lightworks** | Conference and grant reels (`demo_reel_v1`) |
-| **Ardour** | Speech cleanup, stem export, loudness prep |
-| **LMMS** | Repeatable synthetic audio (`synthetic_audio_v1`) |
-
-Launch any editor against project folders:
-
-```powershell
-powershell -File setup/launch-tools.ps1 shotcut
-powershell -File setup/launch-tools.ps1 ardour
-```
-
-## Release bundles
-
-`python bench.py release create` writes to `releases/<release_id>/`:
-
-- `release_manifest.json` — full asset records + hashes
-- `multimodal.jsonl` — one row per asset for custom loaders
-- `huggingface/` — `dataset_info.json` + `train.jsonl`
-- `webdataset_*.tar` — shard-ready tar bundles with sidecar JSON
-
-Releases are registered in `catalog/catalog.db` and are intended to be **immutable** — the unit you cite in papers, eval harnesses, and audit trails.
-
-## Project layout
+## Project structure
 
 ```
-ai-research-media-workbench/
-├── bench.py                 Primary CLI
-├── workbench/               Catalog, QC, ingest, export engine
-├── catalog/catalog.db       Asset registry (local SQLite)
-├── config/
-│   ├── dataset-profiles.yaml
-│   ├── qc-policies.yaml
-│   ├── compliance-template.yaml
-│   ├── export-presets.yaml
-│   └── tool-paths.yaml
-├── assets/                  Pipeline stages (inbox → exports)
-├── releases/                Immutable versioned dataset bundles
-├── projects/                Editor project files
-└── setup/                   Install, detect, launch helpers
+vaultline/
+├── api/server.py           Enterprise API
+├── marketing/              Landing page + one-pager + outreach
+├── console/                Live ops dashboard
+├── leads/                  Target account list
+├── workbench/              Catalog, QC, ingest, export engine
+├── catalog/catalog.db      Asset registry
+├── releases/               Immutable dataset bundles
+└── config/enterprise.yaml  Product + commercial config
 ```
-
-## Compliance
-
-Before releasing human-subject or licensed media, set compliance fields per asset. Template: `config/compliance-template.yaml`.
-
-Required fields vary by profile (e.g. `multimodal_v1` requires `license` + `consent`; `asr_corpus_v1` also requires `speaker_id`).
-
-## Legacy CLI
-
-`scripts/pipeline.py` forwards to `bench.py` for older commands (`status`, `route-inbox`, etc.). New work should use `bench.py` directly.
