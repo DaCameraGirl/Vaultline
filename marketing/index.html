@@ -26,6 +26,11 @@
     .pill{font-size:.8rem;font-weight:700;padding:.25rem .6rem;border-radius:999px}
     .pill.ok{color:var(--good);border:1px solid rgba(94,234,212,.4)}
     .pill.bad{color:var(--bad);border:1px solid rgba(248,113,113,.4)}
+    .pill.warn{color:var(--warn);border:1px solid rgba(251,191,36,.4)}
+    #pages-banner{background:linear-gradient(90deg,rgba(61,139,253,.12),rgba(94,234,212,.08));border:1px solid rgba(94,234,212,.25);border-radius:12px;padding:1rem 1.25rem;margin:0 1.5rem 0}
+    #pages-banner p{color:var(--muted);font-size:.92rem;max-width:900px}
+    #pages-banner strong{color:var(--good)}
+    #pages-banner a{color:var(--accent)}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem}
     .metric{font-size:2rem;font-weight:700}
@@ -51,11 +56,14 @@
   </style>
 </head>
 <body>
+  <div id="pages-banner" hidden>
+    <p><strong>Preview mode.</strong> GitHub Pages hosts this marketing shell only — upload, QC, and demo buttons need the Vaultline API. Double-click <strong>Vaultline</strong> on your Desktop for the full live product, or <a href="https://github.com/DaCameraGirl/Vaultline/blob/main/DEPLOY.md">deploy to Render</a> and set <code>VAULTLINE_API_URL</code> on the repo.</p>
+  </div>
   <nav>
-    <a class="logo" href="/site/index.html" style="text-decoration:none;color:inherit">Vault<span>line</span></a>
+    <a class="logo" href="index.html" style="text-decoration:none;color:inherit">Vault<span>line</span></a>
     <span id="live-status" class="pill">● connecting</span>
     <div class="nav-links">
-      <a class="btn btn-secondary" href="/site/index.html">Home</a>
+      <a class="btn btn-secondary" href="index.html">Home</a>
       <button class="btn btn-primary" id="btn-demo">▶ Run live demo</button>
       <button class="btn btn-secondary" id="btn-audit">Download audit JSON</button>
       <button class="btn btn-secondary" id="btn-quantum">⚛ Quantum seed</button>
@@ -131,7 +139,8 @@
     </section>
   </main>
 
-  <footer>Vaultline · double-click <strong>Vaultline</strong> on your Desktop to start · stop: <code>setup/stop-vaultline.ps1</code></footer>
-  <script src="/site/app.js"></script>
+  <footer>Vaultline · double-click <strong>Vaultline</strong> on your Desktop for the live API · stop: <code>setup/stop-vaultline.ps1</code></footer>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
