@@ -1,0 +1,18 @@
+# Render Blueprint for Vaultline API + console (full platform).
+# Deploy: render.com -> New -> Blueprint -> select Vaultline repo.
+# GitHub Pages hosts the marketing landing page; this service runs the API.
+services:
+  - type: web
+    name: vaultline-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: VAULTLINE_HOST
+        value: 0.0.0.0
+      - key: VAULTLINE_PORT
+        value: "8470"
+      - key: IBM_QUANTUM_API_KEY
+        sync: false

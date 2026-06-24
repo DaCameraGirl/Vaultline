@@ -1,0 +1,40 @@
+name: Deploy marketing site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "marketing/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Pages site
+        run: |
+          mkdir -p _site
+          cp marketing/index.html marketing/app.js _site/
+          sed -i 's|src="/site/app.js"|src="app.js"|g' _site/index.html
+          sed -i 's|href="/console/|href="https://github.com/DaCameraGirl/Vaultline#run-locally"|g' _site/index.html || true
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -11,6 +11,10 @@ catalog/*.db-journal
 catalog/vaultline-server.log
 catalog/vaultline-server.err.log
 catalog/vaultline-server.pid
+catalog/audit_exports/
+
+leads/inbound/*.jsonl
+!leads/inbound/.gitkeep
 
 assets/**/*
 !assets/**/.gitkeep
