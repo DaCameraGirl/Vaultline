@@ -4,58 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vaultline Console</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: system-ui, sans-serif; background: #07090d; color: #e8edf5; margin: 0; }
-    header { padding: 1rem 1.5rem; border-bottom: 1px solid #1c2430; display: flex; justify-content: space-between; }
-    main { padding: 1.5rem; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .card { background: #0f131a; border: 1px solid #1c2430; border-radius: 12px; padding: 1rem; }
-    h1 { font-size: 1rem; margin: 0; }
-    .metric { font-size: 2rem; font-weight: 700; margin-top: 0.5rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
-    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #1c2430; }
-    th { color: #8b97a8; }
-    .section { grid-column: 1 / -1; }
-    .ok { color: #5eead4; } .fail { color: #f87171; }
+    :root {
+      --bg:#07090d; --surface:#0f131a; --border:#1c2430; --text:#e8edf5;
+      --muted:#8b97a8; --accent:#3d8bfd; --good:#5eead4; --bad:#f87171;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Instrument Sans",system-ui,sans-serif;background:var(--bg);color:var(--text)}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.75rem}
+    .logo{font-weight:700;text-decoration:none;color:var(--text)}.logo span{color:var(--good)}
+    .nav-links{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+    .btn,.nav-link{border:none;cursor:pointer;font:inherit;font-weight:600;padding:.55rem .9rem;border-radius:10px;text-decoration:none;display:inline-block}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .nav-link{color:var(--muted);border:1px solid transparent}
+    .nav-link:hover,.nav-link.active{color:var(--text);border-color:var(--border)}
+    .pill{font-size:.75rem;font-weight:700;padding:.2rem .55rem;border-radius:999px}
+    .pill.ok{color:var(--good);border:1px solid rgba(94,234,212,.35)}
+    .pill.bad{color:var(--bad);border:1px solid rgba(248,113,113,.35)}
+    main{max-width:1200px;margin:0 auto;padding:1.25rem;display:grid;gap:1rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem}
+    .metric{font-size:2rem;font-weight:700;margin-top:.35rem}
+    .label{color:var(--muted);font-size:.85rem}
+    .layout{display:grid;grid-template-columns:1.4fr 1fr;gap:1rem}
+    @media(max-width:960px){.layout{grid-template-columns:1fr}}
+    table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:.5rem}
+    th,td{padding:.5rem;text-align:left;border-bottom:1px solid var(--border)}
+    th{color:var(--muted);font-weight:600}
+    tr.row-click{cursor:pointer} tr.row-click:hover{background:rgba(61,139,253,.06)}
+    .ok{color:var(--good)} .bad{color:var(--bad)} .muted{color:var(--muted)}
+    #detail{background:#0a0e14;border:1px solid var(--border);border-radius:10px;padding:.75rem;font-family:ui-monospace,monospace;font-size:.72rem;max-height:420px;overflow:auto;white-space:pre-wrap;margin-top:.5rem;color:#b6c3d6}
+    #log{max-height:200px;overflow:auto;font-family:ui-monospace,monospace;font-size:.75rem;display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+    .log{padding:.35rem .5rem;border-radius:6px;background:#0a0e14;border-left:3px solid var(--accent)}
+    .log-ok{border-left-color:var(--good)} .log-error{border-left-color:var(--bad)} .log-warn{border-left-color:#fbbf24}
+    .link-btn{background:none;border:none;color:var(--accent);cursor:pointer;font:inherit;padding:0}
+    h2{font-size:1rem;margin-bottom:.25rem}
+    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Vaultline Console</h1>
-    <span id="status">Loading…</span>
-  </header>
-  <main>
-    <div class="card"><div>Total assets</div><div class="metric" id="total">—</div></div>
-    <div class="card"><div>Releases</div><div class="metric" id="releases">—</div></div>
-    <div class="card"><div>QC passed</div><div class="metric ok" id="passed">—</div></div>
-    <div class="card"><div>QC failed</div><div class="metric fail" id="failed">—</div></div>
-    <div class="card section">
-      <strong>Recent assets</strong>
-      <table>
-        <thead><tr><th>ID</th><th>Path</th><th>Kind</th><th>QC</th><th>Tool</th></tr></thead>
-        <tbody id="assets"></tbody>
-      </table>
+  <nav>
+    <a class="logo" href="/site/index.html">Vault<span>line</span></a>
+    <div class="nav-links">
+      <a class="nav-link" href="/site/index.html">← Home</a>
+      <a class="nav-link active" href="/console/index.html">Console</a>
+      <a class="nav-link" href="/docs">API docs</a>
+      <span id="status" class="pill">connecting</span>
     </div>
+  </nav>
+
+  <main>
+    <section class="grid">
+      <div class="card"><div class="label">Total assets</div><div class="metric" id="total">—</div></div>
+      <div class="card"><div class="label">QC passed</div><div class="metric ok" id="passed">—</div></div>
+      <div class="card"><div class="label">QC failed</div><div class="metric bad" id="failed">—</div></div>
+      <div class="card"><div class="label">Releases</div><div class="metric" id="releases">—</div></div>
+      <div class="card"><div class="label">Version</div><div class="metric" id="version" style="font-size:1.25rem">—</div></div>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <button class="btn btn-primary" id="btn-demo">▶ Run demo</button>
+        <button class="btn btn-secondary" id="btn-repair">Repair catalog</button>
+        <button class="btn btn-secondary" id="btn-audit">Download audit</button>
+        <button class="btn btn-secondary" id="btn-refresh">Refresh</button>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="card">
+        <h2>Asset catalog</h2>
+        <p class="label">Click a row for details · Lineage button for provenance chain</p>
+        <table>
+          <thead>
+            <tr><th>QC</th><th>Kind</th><th>Stage</th><th>File</th><th>Score</th><th>Profile</th><th></th></tr>
+          </thead>
+          <tbody id="assets"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Detail / lineage</h2>
+        <pre id="detail">Select an asset or click Lineage</pre>
+        <h2 style="margin-top:1rem">Activity</h2>
+        <div id="log"></div>
+      </div>
+    </section>
   </main>
-  <script>
-    async function load() {
-      const dash = await fetch('/v1/dashboard').then(r => r.json());
-      const assets = await fetch('/v1/assets?limit=20').then(r => r.json());
-      document.getElementById('status').textContent = 'Live';
-      document.getElementById('total').textContent = dash.summary.total_assets;
-      document.getElementById('releases').textContent = dash.summary.releases;
-      document.getElementById('passed').textContent = dash.summary.by_qc_verdict.pass ?? 0;
-      document.getElementById('failed').textContent = dash.summary.by_qc_verdict.fail ?? 0;
-      const tbody = document.getElementById('assets');
-      tbody.innerHTML = assets.map(a => `<tr>
-        <td>${a.asset_id.slice(0,24)}…</td>
-        <td>${a.rel_path}</td>
-        <td>${a.kind}</td>
-        <td>${a.qc_verdict ?? '—'}</td>
-        <td>${a.source_tool}</td>
-      </tr>`).join('');
-    }
-    load();
-    setInterval(load, 10000);
-  </script>
+
+  <script src="/console/app.js"></script>
 </body>
 </html>
