@@ -1,0 +1,22 @@
+# Attach compliance metadata to assets before release.
+# bench compliance set --asset <id> --field license --value "CC-BY-4.0"
+
+fields:
+  license:
+    required_for_release: true
+    examples: ["CC-BY-4.0", "internal-research-only", "commercial-licensed"]
+  consent:
+    required_for_release: true
+    examples: ["signed-2026-03-01", "synthetic-no-human", "public-domain"]
+  speaker_id:
+    required_for_release: false
+    examples: ["spk_014", "anon_hash_9f2c"]
+  study_id:
+    required_for_release: false
+    examples: ["IRB-2026-041", "benchmark-synthetic-v3"]
+  synthesis_seed:
+    required_for_release: false
+    examples: ["lmms_seed_44821", "ardour_render_12"]
+  capture_device:
+    required_for_release: false
+    examples: ["zoom_h6", "iphone_15_pro", "screen_capture_obs"]

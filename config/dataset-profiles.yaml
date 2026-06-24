@@ -1,0 +1,49 @@
+# Dataset profiles define what "release-ready" means for each research track.
+# Teams ship immutable releases per profile — not ad-hoc folders.
+
+profiles:
+  multimodal_v1:
+    description: Video+audio clips for multimodal pretraining and eval
+    qc_policy: multimodal_video
+    export:
+      video_preset: training_1080p
+      audio_preset: speech_tts
+    release:
+      min_assets: 10
+      require_qc_pass: true
+
+  asr_corpus_v1:
+    description: Speech corpus for ASR fine-tuning and benchmarking
+    qc_policy: speech_audio
+    export:
+      audio_preset: speech_asr
+    release:
+      min_assets: 50
+      require_qc_pass: true
+
+  tts_eval_v1:
+    description: High-fidelity speech for TTS MOS and intelligibility eval
+    qc_policy: speech_audio_hifi
+    export:
+      audio_preset: speech_tts
+    release:
+      min_assets: 20
+      require_qc_pass: true
+
+  demo_reel_v1:
+    description: Polished research reels for papers, grants, and conference halls
+    qc_policy: demo_video
+    export:
+      video_preset: demo_reel
+    release:
+      min_assets: 1
+      require_qc_pass: true
+
+  synthetic_audio_v1:
+    description: Controlled LMMS/Ardour stems for reproducible audio benchmarks
+    qc_policy: synthetic_audio
+    export:
+      audio_preset: music_sfx
+    release:
+      min_assets: 25
+      require_qc_pass: true

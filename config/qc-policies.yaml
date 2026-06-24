@@ -1,0 +1,74 @@
+# QC gates are enforced before assets can enter a release.
+# Scores are pass-ratio across checks; verdict is pass/fail against min_pass_score.
+
+policies:
+  multimodal_video:
+    description: Video clips with usable motion and intelligible audio
+    applies_to: [video]
+    min_duration_sec: 2.0
+    max_duration_sec: 30.0
+    min_width: 1280
+    min_height: 720
+    target_fps: 30
+    fps_tolerance: 1.0
+    min_blur_score: 2.5
+    min_loudness_lufs: -28
+    max_loudness_lufs: -12
+    max_silence_ratio: 0.45
+    require_compliance_fields: [license, consent]
+    min_pass_score: 0.8
+
+  speech_audio:
+    description: ASR-ready speech with stable loudness and limited dead air
+    applies_to: [audio]
+    min_duration_sec: 1.0
+    max_duration_sec: 20.0
+    target_sample_rate_hz: 16000
+    target_channels: 1
+    min_loudness_lufs: -24
+    max_loudness_lufs: -12
+    max_silence_ratio: 0.35
+    require_compliance_fields: [license, consent, speaker_id]
+    min_pass_score: 0.85
+
+  speech_audio_hifi:
+    description: TTS evaluation speech at 44.1 kHz
+    applies_to: [audio]
+    min_duration_sec: 2.0
+    max_duration_sec: 30.0
+    target_sample_rate_hz: 44100
+    target_channels: 1
+    min_loudness_lufs: -22
+    max_loudness_lufs: -10
+    max_silence_ratio: 0.25
+    require_compliance_fields: [license, consent]
+    min_pass_score: 0.85
+
+  demo_video:
+    description: Publication-grade reels — tighter gates, shorter tolerance for silence
+    applies_to: [video]
+    min_duration_sec: 15.0
+    max_duration_sec: 300.0
+    min_width: 1920
+    min_height: 1080
+    target_fps: 24
+    fps_tolerance: 0.5
+    min_blur_score: 4.0
+    min_loudness_lufs: -20
+    max_loudness_lufs: -10
+    max_silence_ratio: 0.15
+    require_compliance_fields: [license]
+    min_pass_score: 0.9
+
+  synthetic_audio:
+    description: Controlled synthetic stems from LMMS/Ardour pipelines
+    applies_to: [audio]
+    min_duration_sec: 4.0
+    max_duration_sec: 120.0
+    target_sample_rate_hz: 44100
+    target_channels: 2
+    min_loudness_lufs: -18
+    max_loudness_lufs: -8
+    max_silence_ratio: 0.05
+    require_compliance_fields: [license, synthesis_seed]
+    min_pass_score: 0.8

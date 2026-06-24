@@ -40,7 +40,7 @@ function Launch-Tool {
     $projects = Join-Path $ProjectRoot ($Config.projects -replace "/", "\")
     New-Item -ItemType Directory -Force -Path $inbox, $projects | Out-Null
 
-    Write-Host "Launching $Name" -ForegroundColor Cyan
+    Write-Host "SignalForge → Launching $Name" -ForegroundColor Cyan
     Write-Host "  inbox:    $inbox"
     Write-Host "  projects: $projects"
     Start-Process -FilePath $exe -WorkingDirectory $projects
