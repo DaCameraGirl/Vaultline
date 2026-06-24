@@ -66,10 +66,14 @@ def run_qc(path: Path, policy: QCPolicy, compliance: dict[str, Any] | None = Non
             gate("channels", probe["channels"] == policy.target_channels, probe["channels"])
         loudness = _integrated_loudness(path)
         checks["loudness_lufs"] = loudness
-        if policy.min_loudness_lufs is not None:
-            gate("loudness_min", loudness >= policy.min_loudness_lufs, loudness)
-        if policy.max_loudness_lufs is not None:
-            gate("loudness_max", loudness <= policy.max_loudness_lufs, loudness)
+        loudness_valid = -70 < loudness < 0
+        if loudness_valid:
+            if policy.min_loudness_lufs is not None:
+                gate("loudness_min", loudness >= policy.min_loudness_lufs, loudness)
+            if policy.max_loudness_lufs is not None:
+                gate("loudness_max", loudness <= policy.max_loudness_lufs, loudness)
+        else:
+            checks["loudness_skipped"] = "unreadable measurement — gate skipped"
         if policy.max_silence_ratio is not None:
             silence_ratio = _silence_ratio(path)
             checks["silence_ratio"] = silence_ratio

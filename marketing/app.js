@@ -13,7 +13,14 @@ function appendLog(message, type = "info") {
 async function api(path, options = {}) {
   const res = await fetch(path, options);
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.detail || res.statusText || "Request failed");
+  if (!res.ok) {
+    let detail = data.detail || res.statusText || "Request failed";
+    if (Array.isArray(detail)) detail = detail.map((d) => d.msg || d).join(", ");
+    if (res.status === 404 && String(detail) === "Not Found") {
+      detail = "Endpoint missing — restart server: powershell -File setup/restart.ps1";
+    }
+    throw new Error(detail);
+  }
   return data;
 }
 
@@ -32,9 +39,9 @@ async function refreshQuantum() {
       el.textContent = "No API key — run setup/quantum-key.ps1";
       el.className = "muted";
     }
-  } catch {
-    el.textContent = "Quantum status unavailable";
-    el.className = "muted";
+  } catch (err) {
+    el.textContent = err.message.includes("restart") ? err.message : `Quantum unavailable — ${err.message}`;
+    el.className = "warn";
   }
 }
 

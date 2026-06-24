@@ -100,6 +100,7 @@ def health() -> dict[str, Any]:
         "status": "ok",
         "product": PRODUCT["name"],
         "version": PRODUCT["version"],
+        "features": ["ingest", "qc", "releases", "audit", "quantum", "demo"],
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "catalog": catalog.summary(),
     }

@@ -37,6 +37,7 @@ def run_live_demo(profile: str = "asr_corpus_v1") -> dict[str, Any]:
         log.append({"step": name, "detail": detail, "status": status})
 
     step("generate", f"Creating sample speech clip {audio_path.name}")
+    raw_path = audio_path.with_suffix(".raw.wav")
     subprocess.run(
         [
             _ffmpeg(),
@@ -49,11 +50,28 @@ def run_live_demo(profile: str = "asr_corpus_v1") -> dict[str, Any]:
             "16000",
             "-ac",
             "1",
-            str(audio_path),
+            str(raw_path),
         ],
         capture_output=True,
         check=True,
     )
+    step("normalize", "Normalizing loudness for ASR QC gates")
+    filters = [
+        ["-af", "loudnorm=I=-16:TP=-1.5:LRA=11"],
+        ["-af", "volume=-18dB"],
+    ]
+    normalized = False
+    for af in filters:
+        result = subprocess.run(
+            [_ffmpeg(), "-y", "-i", str(raw_path), *af, "-ar", "16000", "-ac", "1", str(audio_path)],
+            capture_output=True,
+        )
+        if result.returncode == 0:
+            normalized = True
+            break
+    if not normalized:
+        raise RuntimeError("Audio normalization failed — check ffmpeg install")
+    raw_path.unlink(missing_ok=True)
 
     step("ingest", "Registering asset in catalog with SHA-256 + content signature")
     result = ingest_path(catalog, audio_path, profile=profile, run_quality_checks=True)
