@@ -26,11 +26,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Prepare Pages site
+        env:
+          VAULTLINE_API_URL: ${{ vars.VAULTLINE_API_URL }}
         run: |
           mkdir -p _site
-          cp marketing/index.html marketing/app.js _site/
-          sed -i 's|src="/site/app.js"|src="app.js"|g' _site/index.html
+          cp marketing/index.html marketing/app.js marketing/config.js _site/
+          printf 'window.VAULTLINE_API = %s;\n' "$(python3 -c 'import json,os; print(json.dumps(os.environ.get("VAULTLINE_API_URL","")))')" > _site/config.js
           sed -i 's|href="/console/|href="https://github.com/DaCameraGirl/Vaultline#run-locally"|g' _site/index.html || true
+          sed -i 's|href="/docs"|href="https://github.com/DaCameraGirl/Vaultline#api-quick-reference"|g' _site/index.html || true
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

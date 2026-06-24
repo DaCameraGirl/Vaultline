@@ -1,6 +1,17 @@
 const $ = (sel) => document.querySelector(sel);
 const logEl = () => $("#activity-log");
 
+const API_BASE = String(window.VAULTLINE_API || "").replace(/\/$/, "");
+const IS_GITHUB_PAGES = /github\.io$/i.test(window.location.hostname);
+const IS_STATIC_PREVIEW = IS_GITHUB_PAGES && !API_BASE;
+
+let offlineNotified = false;
+let pollTimer = null;
+
+function apiUrl(path) {
+  return `${API_BASE}${path}`;
+}
+
 function appendLog(message, type = "info") {
   const el = logEl();
   if (!el) return;
@@ -10,8 +21,67 @@ function appendLog(message, type = "info") {
   el.prepend(line);
 }
 
+function showStaticPreview() {
+  const banner = $("#pages-banner");
+  if (banner) banner.hidden = false;
+
+  $("#live-status").textContent = "● Preview mode";
+  $("#live-status").className = "pill warn";
+
+  ["#stat-assets", "#stat-pass", "#stat-fail", "#stat-releases"].forEach((sel) => {
+    const el = $(sel);
+    if (el) el.textContent = "—";
+  });
+
+  const tbody = $("#asset-rows");
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="4" class="muted">Live QC runs on the full platform — double-click <strong>Vaultline</strong> on your Desktop, or deploy the API with <a href="https://github.com/DaCameraGirl/Vaultline/blob/main/DEPLOY.md" style="color:var(--good)">DEPLOY.md</a>.</td></tr>`;
+  }
+
+  $("#quantum-status").textContent = "Available when the API is running locally or on Render.";
+  $("#quantum-status").className = "muted";
+
+  [
+    "#btn-demo",
+    "#btn-audit",
+    "#btn-quantum",
+    "#btn-repair",
+    "#btn-refresh",
+    "#dropzone",
+    "#file-input",
+    "#demo-form button[type=submit]",
+  ].forEach((sel) => {
+    const el = $(sel);
+    if (el) {
+      el.disabled = true;
+      el.setAttribute("aria-disabled", "true");
+    }
+  });
+
+  if (!offlineNotified) {
+    appendLog(
+      "GitHub Pages preview — marketing shell only. Start the API: powershell -File setup/launch-vaultline.ps1 (or double-click Vaultline on Desktop).",
+      "warn"
+    );
+    offlineNotified = true;
+  }
+}
+
+function notifyOffline(err) {
+  $("#live-status").textContent = "● API offline";
+  $("#live-status").className = "pill bad";
+
+  if (!offlineNotified) {
+    const hint = err.message.includes("restart")
+      ? err.message
+      : `Cannot reach API: ${err.message}. Run: powershell -File setup/start.ps1`;
+    appendLog(hint, "error");
+    offlineNotified = true;
+  }
+}
+
 async function api(path, options = {}) {
-  const res = await fetch(path, options);
+  const res = await fetch(apiUrl(path), options);
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     let detail = data.detail || res.statusText || "Request failed";
@@ -26,7 +96,7 @@ async function api(path, options = {}) {
 
 async function refreshQuantum() {
   const el = $("#quantum-status");
-  if (!el) return;
+  if (!el || IS_STATIC_PREVIEW) return;
   try {
     const status = await api("/v1/quantum/status");
     if (status.ready) {
@@ -46,6 +116,7 @@ async function refreshQuantum() {
 }
 
 async function quantumSeed() {
+  if (IS_STATIC_PREVIEW) return;
   const btn = $("#btn-quantum");
   btn.disabled = true;
   appendLog("Requesting quantum-backed synthesis_seed from IBM…", "info");
@@ -67,10 +138,15 @@ async function quantumSeed() {
 }
 
 async function refreshLive() {
+  if (IS_STATIC_PREVIEW) {
+    showStaticPreview();
+    return;
+  }
+
   try {
     const health = await api("/health");
-    const dash = await api("/v1/dashboard");
     const assets = await api("/v1/assets?limit=8");
+    offlineNotified = false;
 
     $("#live-status").textContent = health.status === "ok" ? "● Live" : "Offline";
     $("#live-status").className = health.status === "ok" ? "pill ok" : "pill bad";
@@ -84,18 +160,17 @@ async function refreshLive() {
       ? assets.map((a) => `<tr>
           <td title="${a.asset_id}">${a.asset_id.slice(0, 20)}…</td>
           <td>${a.kind}</td>
-          <td class="${a.qc_verdict === 'pass' ? 'ok' : a.qc_verdict === 'fail' ? 'bad' : ''}">${a.qc_verdict || "—"}</td>
+          <td class="${a.qc_verdict === "pass" ? "ok" : a.qc_verdict === "fail" ? "bad" : ""}">${a.qc_verdict || "—"}</td>
           <td>${a.source_tool}</td>
         </tr>`).join("")
       : `<tr><td colspan="4" class="muted">No assets yet — run the live demo or upload a file.</td></tr>`;
   } catch (err) {
-    $("#live-status").textContent = "● API offline";
-    $("#live-status").className = "pill bad";
-    appendLog(`Cannot reach API: ${err.message}. Run: powershell -File setup/start.ps1`, "error");
+    notifyOffline(err);
   }
 }
 
 async function repairCatalog() {
+  if (IS_STATIC_PREVIEW) return;
   appendLog("Repairing catalog — compliance fill, audio normalize, re-QC…", "info");
   try {
     const result = await api("/v1/catalog/repair", { method: "POST" });
@@ -115,6 +190,7 @@ async function repairCatalog() {
 }
 
 async function runDemo() {
+  if (IS_STATIC_PREVIEW) return;
   const btn = $("#btn-demo");
   btn.disabled = true;
   appendLog("Starting live demo…", "info");
@@ -133,6 +209,7 @@ async function runDemo() {
 }
 
 async function uploadFile(file) {
+  if (IS_STATIC_PREVIEW) return;
   appendLog(`Uploading ${file.name}…`, "info");
   const form = new FormData();
   form.append("file", file);
@@ -146,9 +223,10 @@ async function uploadFile(file) {
 }
 
 async function exportAudit() {
+  if (IS_STATIC_PREVIEW) return;
   appendLog("Exporting audit bundle…", "info");
   try {
-    window.open("/v1/audit/download", "_blank");
+    window.open(apiUrl("/v1/audit/download"), "_blank");
     appendLog("Audit JSON download started.", "ok");
   } catch (err) {
     appendLog(`Audit export failed: ${err.message}`, "error");
@@ -157,6 +235,10 @@ async function exportAudit() {
 
 async function submitDemoForm(ev) {
   ev.preventDefault();
+  if (IS_STATIC_PREVIEW) {
+    appendLog("Demo requests need the API — run Vaultline locally or deploy to Render (see DEPLOY.md).", "warn");
+    return;
+  }
   const body = {
     name: $("#demo-name").value.trim(),
     email: $("#demo-email").value.trim(),
@@ -191,10 +273,17 @@ function init() {
 
   const drop = $("#dropzone");
   const input = $("#file-input");
-  drop?.addEventListener("click", () => input?.click());
-  drop?.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("hover"); });
+  drop?.addEventListener("click", () => {
+    if (!IS_STATIC_PREVIEW) input?.click();
+  });
+  drop?.addEventListener("dragover", (e) => {
+    if (IS_STATIC_PREVIEW) return;
+    e.preventDefault();
+    drop.classList.add("hover");
+  });
   drop?.addEventListener("dragleave", () => drop.classList.remove("hover"));
   drop?.addEventListener("drop", (e) => {
+    if (IS_STATIC_PREVIEW) return;
     e.preventDefault();
     drop.classList.remove("hover");
     const file = e.dataTransfer?.files?.[0];
@@ -207,7 +296,10 @@ function init() {
 
   refreshLive();
   refreshQuantum();
-  setInterval(refreshLive, 8000);
+
+  if (!IS_STATIC_PREVIEW) {
+    pollTimer = setInterval(refreshLive, 30000);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);
