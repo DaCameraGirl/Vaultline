@@ -37,7 +37,7 @@
     table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:.75rem}
     th,td{padding:.45rem;text-align:left;border-bottom:1px solid var(--border)}
     th{color:var(--muted)}
-    .ok{color:var(--good)} .bad{color:var(--bad)} .muted{color:var(--muted)}
+    .ok{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)} .muted{color:var(--muted)}
     #activity-log{max-height:280px;overflow:auto;font-family:ui-monospace,monospace;font-size:.78rem;display:flex;flex-direction:column;gap:.35rem}
     .log-line{padding:.35rem .5rem;border-radius:6px;background:#0a0e14}
     .log-ok{border-left:3px solid var(--good)}
@@ -56,6 +56,7 @@
     <div class="nav-links">
       <button class="btn btn-primary" id="btn-demo">▶ Run live demo</button>
       <button class="btn btn-secondary" id="btn-audit">Download audit JSON</button>
+      <button class="btn btn-secondary" id="btn-quantum">⚛ Quantum seed</button>
       <button class="btn btn-secondary" id="btn-refresh">Refresh</button>
       <a class="btn btn-secondary" href="/console/index.html">Open console</a>
       <a class="btn btn-secondary" href="/docs">API docs</a>
@@ -105,6 +106,13 @@
           <button class="btn btn-primary" type="submit">Submit demo request</button>
         </form>
         <p id="demo-form-status" class="ok" style="margin-top:.75rem"></p>
+      </div>
+
+      <div class="card">
+        <h2>IBM Quantum</h2>
+        <p class="sub" style="margin:.5rem 0">Uses your <code>IBM_QUANTUM_API_KEY</code> to generate a quantum-backed <code>synthesis_seed</code> for synthetic audio compliance (<code>synthetic_audio_v1</code>).</p>
+        <p id="quantum-status" class="muted">Checking…</p>
+        <p class="sub" style="margin-top:.5rem;font-size:.85rem">Setup: <code>powershell -File setup/quantum-key.ps1</code> then <code>pip install -r requirements-quantum.txt</code></p>
       </div>
 
       <div class="card">

@@ -294,6 +294,27 @@ def cmd_serve(_: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_quantum_status(_: argparse.Namespace) -> int:
+    from workbench.quantum import quantum_status
+
+    emit(json.dumps(quantum_status(), indent=2))
+    return 0
+
+
+def cmd_quantum_seed(args: argparse.Namespace) -> int:
+    from dataclasses import asdict
+
+    from workbench.catalog import Catalog
+    from workbench.quantum import attach_seed_to_asset, generate_quantum_seed
+
+    seed = generate_quantum_seed(prefer_hardware=args.hardware)
+    emit(json.dumps(asdict(seed), indent=2))
+    if args.asset:
+        attach_seed_to_asset(Catalog(), args.asset, seed)
+        emit(f"Attached synthesis_seed to {args.asset}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="vaultline",
@@ -356,6 +377,14 @@ def build_parser() -> argparse.ArgumentParser:
     watch.add_argument("--profile")
     watch.add_argument("--once", action="store_true")
     watch.set_defaults(func=cmd_watch)
+
+    quantum = sub.add_parser("quantum", help="IBM Quantum integration")
+    quantum_sub = quantum.add_subparsers(dest="quantum_command", required=True)
+    quantum_sub.add_parser("status", help="Check API key and Qiskit install").set_defaults(func=cmd_quantum_status)
+    seed = quantum_sub.add_parser("seed", help="Generate quantum-backed synthesis_seed")
+    seed.add_argument("--asset", help="Attach seed to asset compliance metadata")
+    seed.add_argument("--hardware", action="store_true", help="Prefer real QPU over simulator")
+    seed.set_defaults(func=cmd_quantum_seed)
 
     return parser
 

@@ -17,6 +17,48 @@ async function api(path, options = {}) {
   return data;
 }
 
+async function refreshQuantum() {
+  const el = $("#quantum-status");
+  if (!el) return;
+  try {
+    const status = await api("/v1/quantum/status");
+    if (status.ready) {
+      el.textContent = "● IBM Quantum ready — click ⚛ Quantum seed";
+      el.className = "ok";
+    } else if (status.configured) {
+      el.textContent = "Key set — install Qiskit: pip install -r requirements-quantum.txt";
+      el.className = "warn";
+    } else {
+      el.textContent = "No API key — run setup/quantum-key.ps1";
+      el.className = "muted";
+    }
+  } catch {
+    el.textContent = "Quantum status unavailable";
+    el.className = "muted";
+  }
+}
+
+async function quantumSeed() {
+  const btn = $("#btn-quantum");
+  btn.disabled = true;
+  appendLog("Requesting quantum-backed synthesis_seed from IBM…", "info");
+  try {
+    const assets = await api("/v1/assets?limit=1&kind=audio");
+    const assetId = assets[0]?.asset_id;
+    const url = assetId
+      ? `/v1/quantum/seed?asset_id=${encodeURIComponent(assetId)}`
+      : "/v1/quantum/seed";
+    const result = await api(url, { method: "POST" });
+    appendLog(`Quantum seed: ${result.synthesis_seed} (${result.backend})`, "ok");
+    if (result.attached_to) appendLog(`Attached to asset ${result.attached_to}`, "ok");
+    await refreshLive();
+  } catch (err) {
+    appendLog(`Quantum seed failed: ${err.message}`, "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 async function refreshLive() {
   try {
     const health = await api("/health");
@@ -116,6 +158,7 @@ async function submitDemoForm(ev) {
 function init() {
   $("#btn-demo")?.addEventListener("click", runDemo);
   $("#btn-audit")?.addEventListener("click", exportAudit);
+  $("#btn-quantum")?.addEventListener("click", quantumSeed);
   $("#btn-refresh")?.addEventListener("click", refreshLive);
   $("#demo-form")?.addEventListener("submit", submitDemoForm);
 
@@ -136,6 +179,7 @@ function init() {
   });
 
   refreshLive();
+  refreshQuantum();
   setInterval(refreshLive, 8000);
 }
 

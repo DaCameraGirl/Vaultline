@@ -1,0 +1,14 @@
+# Copy to quantum.yaml (gitignored) or set env var IBM_QUANTUM_API_KEY
+
+ibm_quantum:
+  # 44-character API key from https://quantum.cloud.ibm.com/
+  api_key_env: IBM_QUANTUM_API_KEY
+  # Optional: IBM Cloud instance CRN
+  instance: ""
+  # true = real QPU when available; false = simulator (faster, free tier friendly)
+  prefer_hardware: false
+
+usage:
+  - Generates compliance synthesis_seed for synthetic_audio_v1 assets
+  - Stored in asset.compliance.synthesis_seed + asset.metadata.quantum
+  - Provenance event type quantum_seed for audit trail

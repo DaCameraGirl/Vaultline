@@ -312,6 +312,35 @@ def list_demo_requests() -> list[dict[str, Any]]:
     return rows[-50:]
 
 
+@app.get("/v1/quantum/status")
+def quantum_status_endpoint() -> dict[str, Any]:
+    from workbench.quantum import quantum_status
+
+    return quantum_status()
+
+
+@app.post("/v1/quantum/seed")
+def quantum_seed(prefer_hardware: bool = False, asset_id: str | None = None) -> dict[str, Any]:
+    from dataclasses import asdict
+
+    from workbench.quantum import attach_seed_to_asset, generate_quantum_seed
+
+    catalog = Catalog()
+    try:
+        seed = generate_quantum_seed(prefer_hardware=prefer_hardware)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    payload = asdict(seed)
+    if asset_id:
+        try:
+            attach_seed_to_asset(catalog, asset_id, seed)
+            payload["attached_to"] = asset_id
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return payload
+
+
 @app.get("/v1/audit/download")
 def audit_download():
     catalog = Catalog()
