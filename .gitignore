@@ -8,6 +8,9 @@ Thumbs.db
 
 catalog/catalog.db
 catalog/*.db-journal
+catalog/vaultline-server.log
+catalog/vaultline-server.err.log
+catalog/vaultline-server.pid
 
 assets/**/*
 !assets/**/.gitkeep

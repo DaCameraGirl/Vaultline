@@ -1,10 +1,11 @@
 # One-click Vaultline launcher — starts server if needed, opens browser.
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $Port = 8470
 $AppUrl = "http://localhost:$Port/site/index.html"
 $LogDir = Join-Path $ProjectRoot "catalog"
 $LogFile = Join-Path $LogDir "vaultline-server.log"
+$ErrFile = Join-Path $LogDir "vaultline-server.err.log"
 $PidFile = Join-Path $LogDir "vaultline-server.pid"
 
 Set-Location $ProjectRoot
@@ -25,14 +26,18 @@ function Start-VaultlineServer {
     $python = Join-Path $ProjectRoot ".venv\Scripts\python.exe"
     if (-not (Test-Path $python)) { $python = "python" }
 
-    & $python -m pip install -r requirements.txt -q 2>> $LogFile
+    Start-Process -FilePath $python -ArgumentList "-m","pip","install","-r","requirements.txt","-q" `
+        -WorkingDirectory $ProjectRoot -WindowStyle Hidden -Wait `
+        -RedirectStandardOutput $LogFile -RedirectStandardError $ErrFile | Out-Null
 
     $proc = Start-Process -FilePath $python `
         -ArgumentList "-m", "api.server" `
         -WorkingDirectory $ProjectRoot `
         -WindowStyle Hidden `
+        -RedirectStandardOutput $LogFile -RedirectStandardError $ErrFile `
         -PassThru
 
+    if (-not $proc) { throw "Failed to start Vaultline server process" }
     $proc.Id | Out-File -FilePath $PidFile -Encoding ascii -Force
     return $proc
 }
