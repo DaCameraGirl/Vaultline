@@ -20,16 +20,24 @@ Deploy today. Market today. No cloud lock-in.
 
 ## Start the platform
 
+**Easiest — double-click `Vaultline` on your Desktop.**
+
+First-time setup (creates the icon):
+
 ```powershell
-powershell -File setup/start.ps1
+powershell -File setup/create-desktop-shortcut.ps1
 ```
 
-Or:
+Or manually:
 
 ```powershell
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-python bench.py serve
+setup\Launch Vaultline.bat
+```
+
+Stop the background server:
+
+```powershell
+powershell -File setup/stop-vaultline.ps1
 ```
 
 **Live URLs:**
