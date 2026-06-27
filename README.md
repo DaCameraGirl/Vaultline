@@ -65,7 +65,7 @@ Prove what went into the model: every clip traced, QC-gated, and release-ready.
 > **Status:** marketing site is live on GitHub Pages. The **full platform** (API + console + ingest) runs locally via Desktop shortcut or deploys with [DEPLOY.md](./DEPLOY.md).
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Repo%20vs%20live&fontSize=22&fontColor=e6edf3" width="720" alt="Repo vs live" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Repo%20vs%20live&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Repo vs live" /></p>
 
 
 | What | URL |
@@ -78,7 +78,7 @@ Prove what went into the model: every clip traced, QC-gated, and release-ready.
 GitHub shows this README. Bookmark the **live site** for the marketing URL — it's separate from the repo page.
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Highlights&fontSize=22&fontColor=e6edf3" width="720" alt="Highlights" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Highlights&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Highlights" /></p>
 
 
 | Layer | What it does |
@@ -93,7 +93,7 @@ GitHub shows this README. Bookmark the **live site** for the marketing URL — i
 | **Render** | `render.yaml` blueprint for hosted API |
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Run%20locally%20(full%20platform)&fontSize=22&fontColor=e6edf3" width="720" alt="Run locally (full platform)" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Run%20locally%20(full%20platform)&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Run locally (full platform)" /></p>
 
 
 **Easiest — double-click `Vaultline` on your Desktop.**
@@ -131,7 +131,7 @@ powershell -File setup/stop-vaultline.ps1
 ```
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Who%20buys%20this&fontSize=22&fontColor=e6edf3" width="720" alt="Who buys this" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Who%20buys%20this&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Who buys this" /></p>
 
 
 | Segment | Pain |
@@ -143,7 +143,7 @@ powershell -File setup/stop-vaultline.ps1
 **Buyer:** VP Engineering · Head of ML Data · Director AI Compliance
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Market%20it&fontSize=22&fontColor=e6edf3" width="720" alt="Market it" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Market%20it&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Market it" /></p>
 
 
 1. Open `leads/target-accounts.csv`
@@ -154,7 +154,7 @@ powershell -File setup/stop-vaultline.ps1
 See `marketing/CAMPAIGN.md` for the 30-day plan.
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=API%20quick%20reference&fontSize=22&fontColor=e6edf3" width="720" alt="API quick reference" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=API%20quick%20reference&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="API quick reference" /></p>
 
 
 ```http
@@ -168,13 +168,13 @@ GET  /v1/audit/export
 ```
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Deploy%20to%20production&fontSize=22&fontColor=e6edf3" width="720" alt="Deploy to production" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Deploy%20to%20production&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Deploy to production" /></p>
 
 
 See **[DEPLOY.md](./DEPLOY.md)** — GitHub Pages (marketing), Render (API), or Docker.
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Project%20structure&fontSize=22&fontColor=e6edf3" width="720" alt="Project structure" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Project%20structure&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Project structure" /></p>
 
 
 ```text
@@ -191,14 +191,14 @@ Vaultline/
 ```
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Contributors&fontSize=22&fontColor=e6edf3" width="720" alt="Contributors" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=Contributors&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="Contributors" /></p>
 
 
 - **Angela Hudson** ([DaCameraGirl](https://github.com/DaCameraGirl)) — product direction, GTM, testing
 - **Claude** — platform scaffold, API, console, marketing, deploy kit
 
 <p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
-<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=License&fontSize=22&fontColor=e6edf3" width="720" alt="License" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=waving&color=0:070b14,100:12102a&height=50&section=header&text=License&fontSize=22&fontColor=e6edf3&animation=twinkling" width="720" alt="License" /></p>
 
 
 © 2026 Angela Hudson (DaCameraGirl). See [LICENSE](./LICENSE).
