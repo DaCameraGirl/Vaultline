@@ -1,7 +1,39 @@
 <p align="center">
-  <img src="docs/assets/readme-hero.svg" alt="Vaultline — AI training media governance" width="100%"/>
+  <img src="docs/readme-banner.svg" alt="Vaultline — AI training media governance — provenance, QC, compliance, and releases for voice/video training data." width="720" />
 </p>
 
+<p align="center">
+  <strong>AI training media governance — provenance, QC, compliance, and releases for voice/video training data.</strong>
+</p>
+
+<p align="center">
+  <a href="https://dacameragirl.github.io/Vaultline/"><img src="https://img.shields.io/badge/Live-GitHub%20Pages-33d69f?style=for-the-badge&logo=github&logoColor=white" alt="Live demo" /></a>
+  <a href="https://github.com/DaCameraGirl/Vaultline"><img src="https://img.shields.io/badge/Code-GitHub-58a6ff?style=for-the-badge&logo=github&logoColor=white" alt="Source code" /></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/deploy-GitHub Pages-000000?style=flat-square&logo=github&logoColor=white" alt="deploy-GitHub Pages" />
+  <img src="https://img.shields.io/badge/governance-QC-33d69f?style=flat-square" alt="governance-QC" />
+</p>
+
+### Languages
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-68%25-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/HTML-11%25-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML" />
+  <img src="https://img.shields.io/badge/JavaScript-11%25-F7DF1E?style=flat-square&logo=javascript&logoColor=111" alt="JavaScript" />
+</p>
+
+### Stack
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-pipeline-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python-pipeline" />
+  <img src="https://img.shields.io/badge/GitHub Pages-live-33d69f?style=flat-square&logo=github&logoColor=white" alt="GitHub Pages-live" />
+</p>
+
+<p align="center">
+  Built by <strong>Angela Hudson</strong> · <a href="https://github.com/DaCameraGirl">DaCameraGirl</a>
+</p>
 # Vaultline
 
 <p align="center">
@@ -32,7 +64,9 @@ Prove what went into the model: every clip traced, QC-gated, and release-ready.
 
 > **Status:** marketing site is live on GitHub Pages. The **full platform** (API + console + ingest) runs locally via Desktop shortcut or deploys with [DEPLOY.md](./DEPLOY.md).
 
-## Repo vs live
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Repo%20vs%20live&fontSize=22&fontColor=e6edf3" width="720" alt="Repo vs live" /></p>
+
 
 | What | URL |
 |---|---|
@@ -43,7 +77,9 @@ Prove what went into the model: every clip traced, QC-gated, and release-ready.
 
 GitHub shows this README. Bookmark the **live site** for the marketing URL — it's separate from the repo page.
 
-## Highlights
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Highlights&fontSize=22&fontColor=e6edf3" width="720" alt="Highlights" /></p>
+
 
 | Layer | What it does |
 |---|---|
@@ -56,7 +92,9 @@ GitHub shows this README. Bookmark the **live site** for the marketing URL — i
 | **Docker** | `docker compose up` for production-style deploy |
 | **Render** | `render.yaml` blueprint for hosted API |
 
-## Run locally (full platform)
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Run%20locally%20(full%20platform)&fontSize=22&fontColor=e6edf3" width="720" alt="Run locally (full platform)" /></p>
+
 
 **Easiest — double-click `Vaultline` on your Desktop.**
 
@@ -92,7 +130,9 @@ Stop:
 powershell -File setup/stop-vaultline.ps1
 ```
 
-## Who buys this
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Who%20buys%20this&fontSize=22&fontColor=e6edf3" width="720" alt="Who buys this" /></p>
+
 
 | Segment | Pain |
 |---|---|
@@ -102,7 +142,9 @@ powershell -File setup/stop-vaultline.ps1
 
 **Buyer:** VP Engineering · Head of ML Data · Director AI Compliance
 
-## Market it
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Market%20it&fontSize=22&fontColor=e6edf3" width="720" alt="Market it" /></p>
+
 
 1. Open `leads/target-accounts.csv`
 2. Use templates in `marketing/outreach-templates.md`
@@ -111,7 +153,9 @@ powershell -File setup/stop-vaultline.ps1
 
 See `marketing/CAMPAIGN.md` for the 30-day plan.
 
-## API quick reference
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=API%20quick%20reference&fontSize=22&fontColor=e6edf3" width="720" alt="API quick reference" /></p>
+
 
 ```http
 GET  /health
@@ -123,11 +167,15 @@ POST /v1/releases
 GET  /v1/audit/export
 ```
 
-## Deploy to production
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Deploy%20to%20production&fontSize=22&fontColor=e6edf3" width="720" alt="Deploy to production" /></p>
+
 
 See **[DEPLOY.md](./DEPLOY.md)** — GitHub Pages (marketing), Render (API), or Docker.
 
-## Project structure
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Project%20structure&fontSize=22&fontColor=e6edf3" width="720" alt="Project structure" /></p>
+
 
 ```text
 Vaultline/
@@ -142,11 +190,15 @@ Vaultline/
 └── config/enterprise.yaml  Product config
 ```
 
-## Contributors
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=Contributors&fontSize=22&fontColor=e6edf3" width="720" alt="Contributors" /></p>
+
 
 - **Angela Hudson** ([DaCameraGirl](https://github.com/DaCameraGirl)) — product direction, GTM, testing
 - **Claude** — platform scaffold, API, console, marketing, deploy kit
 
-## License
+<p align="center"><img src="docs/readme-divider.svg" width="720" alt="" /></p>
+<p align="center"><img src="https://capsule-render.vercel.app/api?type=rect&color=070b14&height=50&section=header&text=License&fontSize=22&fontColor=e6edf3" width="720" alt="License" /></p>
+
 
 © 2026 Angela Hudson (DaCameraGirl). See [LICENSE](./LICENSE).
